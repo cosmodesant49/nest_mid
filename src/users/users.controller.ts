@@ -1,3 +1,4 @@
+// src/users/users.controller.ts
 import { Controller, Get, Patch, Param, Body, Req, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
@@ -7,18 +8,23 @@ import { User as PrismaUser } from '@prisma/client';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  findAll(): PrismaUser[] { // Метод для получения всех пользователей
+    return this.usersService.findAll();
+  }
+
   @Get('profile')
-  getProfile(@Req() req): PrismaUser { // Используем правильный тип
-    return this.usersService.getProfile(req.user.id); // Здесь req.user.id должен быть строкой
+  getProfile(@Req() req): PrismaUser {
+    return this.usersService.getProfile(req.user.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() userDto: UserDto): PrismaUser { // Изменяем тип id на string
-    return this.usersService.update(id, userDto); // Здесь мы передаем строку
+  update(@Param('id') id: string, @Body() userDto: UserDto): PrismaUser {
+    return this.usersService.update(id, userDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): void { // Изменяем тип id на string
-    this.usersService.delete(id); // Вызываем метод удаления пользователя
+  delete(@Param('id') id: string): void {
+    this.usersService.delete(id);
   }
 }

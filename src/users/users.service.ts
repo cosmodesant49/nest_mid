@@ -12,6 +12,9 @@ export class UsersService {
     this.users.push(newUser);
     return newUser;
   }
+  findAll(): PrismaUser[] {
+    return this.users; // Возвращаем всех пользователей
+  }
 
   async findByEmail(email: string): Promise<PrismaUser | undefined> {
     return this.users.find(user => user.email === email);
@@ -41,5 +44,5 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     this.users.splice(index, 1); // Удаляем пользователя из массива
-  }
+  } 
 }
