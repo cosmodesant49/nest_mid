@@ -8,22 +8,23 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers(): PrismaUser[] { // Метод для получения всех пользователей
+  async getUsers(): Promise<PrismaUser[]> {
     return this.usersService.findAll();
   }
 
   @Get('profile')
-  getProfile(@Req() req): PrismaUser {
-    return this.usersService.getProfile(req.user.id); // Убедитесь, что req.user.id также int
+  async getProfile(@Req() req): Promise<PrismaUser> {
+    return this.usersService.getProfile(req.user.id); // Предполагается, что req.user.id — это int
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() userDto: UserDto): PrismaUser { // Измените на number
-    return this.usersService.update(id, userDto);
+  async update(@Param('id') id: string, @Body() userDto: UserDto): Promise<PrismaUser> {
+    return this.usersService.update(parseInt(id, 10), userDto);
   }
-
+  
   @Delete(':id')
-  delete(@Param('id') id: number): void { // Измените на number
-    this.usersService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.usersService.delete(parseInt(id, 10));
   }
+  
 }
