@@ -9,7 +9,7 @@ export class RateLimiterMiddleware implements NestMiddleware {
     const now = Date.now();
 
     // Установите лимиты
-    const limit = 5; // 5 запросов
+    const limit = 500; // 5 запросов
     const windowTime = 60 * 1000; // 1 минута
 
     if (!this.requests.has(key)) {
