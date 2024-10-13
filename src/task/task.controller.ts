@@ -1,11 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { TaskDto } from './dto/task.dto';
+import { RateLimit, RateLimiterModule } from 'nestjs-rate-limiter';
 
 @Controller('task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  @RateLimit({ points: 2, duration: 30 })
   @Get()
   async getTasks() {
     return this.taskService.getAll();

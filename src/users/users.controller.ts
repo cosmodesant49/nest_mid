@@ -1,4 +1,3 @@
-// src/users/users.controller.ts
 import { Controller, Get, Patch, Param, Body, Req, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
@@ -9,22 +8,22 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  findAll(): PrismaUser[] { // Метод для получения всех пользователей
+  getUsers(): PrismaUser[] { // Метод для получения всех пользователей
     return this.usersService.findAll();
   }
 
   @Get('profile')
   getProfile(@Req() req): PrismaUser {
-    return this.usersService.getProfile(req.user.id);
+    return this.usersService.getProfile(req.user.id); // Убедитесь, что req.user.id также int
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() userDto: UserDto): PrismaUser {
+  update(@Param('id') id: number, @Body() userDto: UserDto): PrismaUser { // Измените на number
     return this.usersService.update(id, userDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): void {
+  delete(@Param('id') id: number): void { // Измените на number
     this.usersService.delete(id);
   }
 }
